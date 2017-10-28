@@ -53,7 +53,7 @@ UKF::UKF() {
   */
   n_x_ = 5;
   n_aug_ = 7;
-  lambda_ = 3 - n_x_;
+  lambda_ = 3 - n_aug_;
   Xsig_pred_ = MatrixXd(5, 2*n_aug_+1);
 
   //P_ = MatrixXd::Identity(5, 5);
@@ -127,7 +127,7 @@ void UKF::ProcessMeasurement(MeasurementPackage measurement_pack) {
     return;
   }
 
- float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0; //dt - expressed in seconds
+  float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0; //dt - expressed in seconds
   previous_timestamp_ = measurement_pack.timestamp_;
 
   
@@ -165,21 +165,21 @@ void UKF::Prediction(double delta_t) {
 
 */
 
-  cout << "Previous x_ ";
-  cout << x_ << endl;
-  cout << "Previous P_ " << P_ << endl << endl << endl;
+  //cout << "Previous x_ ";
+  //cout << x_ << endl;
+  //cout << "Previous P_ " << P_ << endl << endl << endl;
 
   MatrixXd Xsig_aug = GenerateSigmaPoints();
  
 
-  cout << "Xsig_aug " << Xsig_aug << endl; 
+  //cout << "Xsig_aug " << Xsig_aug << endl; 
 
   //predict sigma points
   PredictSigmaPoints(Xsig_aug, delta_t);
   
 
    
-  cout << "Xsig_pred_: " << Xsig_pred_ << endl;
+  //cout << "Xsig_pred_: " << Xsig_pred_ << endl;
   
 
  
@@ -275,6 +275,11 @@ void UKF::PredictSigmaPoints(MatrixXd& Xsig_aug, float delta_t){
     v_p = v_p + nu_a*delta_t;
 
     yaw_p = yaw_p + 0.5*nu_yawdd*delta_t*delta_t;
+    //angle normalization
+    //while (yaw_p> M_PI) yaw_p-=2.*M_PI;
+    //while (yaw_p<-M_PI) yaw_p+=2.*M_PI;
+
+
     yawd_p = yawd_p + nu_yawdd*delta_t;
 
     //write predicted sigma point into right column

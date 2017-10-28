@@ -46,11 +46,6 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
 	//calculate the squared root
 	// ... your code here
 	rmse = rmse.array().sqrt();
-	/*rmse(2) = 0;
-	rmse(3) = 0;
-	rmse(1) = 0;
-	rmse(0) = 0;
-	*/
 	//return the result
 	return rmse;
 }
